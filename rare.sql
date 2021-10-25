@@ -6,18 +6,8 @@ CREATE TABLE "Users" (
   "bio" varchar,
   "username" varchar,
   "password" varchar,
-  "profile_image_url" varchar,
   "created_on" date,
   "active" bit
-);
-
-CREATE TABLE "DemotionQueue" (
-  "action" varchar,
-  "admin_id" INTEGER,
-  "approver_one_id" INTEGER,
-  FOREIGN KEY(`admin_id`) REFERENCES `Users`(`id`),
-  FOREIGN KEY(`approver_one_id`) REFERENCES `Users`(`id`),
-  PRIMARY KEY (action, admin_id, approver_one_id)
 );
 
 
@@ -26,6 +16,7 @@ CREATE TABLE "Subscriptions" (
   "follower_id" INTEGER,
   "author_id" INTEGER,
   "created_on" date,
+  "ended_on" date,
   FOREIGN KEY(`follower_id`) REFERENCES `Users`(`id`),
   FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
 );
@@ -36,9 +27,7 @@ CREATE TABLE "Posts" (
   "category_id" INTEGER,
   "title" varchar,
   "publication_date" date,
-  "image_url" varchar,
-  "content" varchar,
-  "approved" bit
+  "content" varchar
 );
 
 CREATE TABLE "Comments" (
@@ -46,6 +35,7 @@ CREATE TABLE "Comments" (
   "post_id" INTEGER,
   "author_id" INTEGER,
   "content" varchar,
+  "created_on" date,
   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
   FOREIGN KEY(`author_id`) REFERENCES `Users`(`id`)
 );
@@ -54,6 +44,7 @@ CREATE TABLE "Reactions" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "label" varchar,
   "image_url" varchar
+ 
 );
 
 CREATE TABLE "PostReactions" (
@@ -87,3 +78,26 @@ CREATE TABLE "Categories" (
 INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
+INSERT INTO Users (
+    
+    first_name,
+    last_name,
+    email,
+    bio,
+    username,
+    password,
+    created_on,
+    active
+  )
+VALUES (
+    
+    'Rusty',
+    'Shackleford',
+    'RShack@gmail.com',
+    'Owner of Dales Dead Bug',
+    'RShack',
+    'password',
+    '10/22/2021',
+    'active:bit'
+  );
+ 
