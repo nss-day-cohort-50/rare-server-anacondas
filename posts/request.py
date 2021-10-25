@@ -1,35 +1,7 @@
 import sqlite3
 import json
+from models import Post
 
-POSTS = [
-    {
-        "id": 1,
-        "user_id": 1,
-        "category_id": 2,
-        "title": 1,
-        "publication_date": 10/25,
-        "content": "Hello World",
-        "approved": True
-    },
-    {
-        "id": 2,
-        "user_id": 1,
-        "category_id": 2,
-        "title": 1,
-        "publication_date": 10/25,
-        "content": "Hello World2",
-        "approved": True
-    },
-    {
-        "id": 3,
-        "user_id": 2,
-        "category_id": 2,
-        "title": 1,
-        "publication_date": 10/25,
-        "content": "Hello World3",
-        "approved": True
-    }
-]
 
 def get_all_posts():
     # Open a connection to the database
