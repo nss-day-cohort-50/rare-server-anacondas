@@ -38,7 +38,7 @@ def get_single_user(id):
         db_cursor.execute("""
         select
             t.id,
-            t.label
+            t.username
         from user t
         where t.id = ?
         """, (id, ))
@@ -57,7 +57,7 @@ def create_user(user):
         Insert into user
         (username, first_name, last_name)
         values (?, ?, ?)
-        """, (user['username'], user['first_name'] user[last_name]))
+        """, (user['username'], user['first_name'], user[last_name]))
 
         user_id = db_cursor.lastrowid
 
@@ -95,7 +95,7 @@ def update_user(id, updated_user):
         else:
             return False
 
-# def get_users_by_search(text):
-#     users = json.loads(get_all_users())
-#     users = [user for user in users if text.lower() in user['username'].lower()]
-#     return json.dumps(users)
+def get_users_by_search(text):
+    users = json.loads(get_all_users())
+    users = [user for user in users if text.lower() in user['username'].lower()]
+    return json.dumps(users)
