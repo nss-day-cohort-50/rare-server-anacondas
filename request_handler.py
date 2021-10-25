@@ -32,9 +32,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             try:
                 id = int(path_params[2])
             except IndexError:
-                
+                pass  
             except ValueError:
-               
+                pass  
 
             return (resource, id)
 
