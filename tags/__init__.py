@@ -1,1 +1,1 @@
-from .request import get_all_animals, get_single_animal, create_animal, delete_animal, update_animal, get_animals_by_search
+from .request import get_all_tags, get_single_tag, create_tag, delete_tag, update_tag, get_tags_by_search
