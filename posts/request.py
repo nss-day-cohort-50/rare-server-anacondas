@@ -20,7 +20,7 @@ def get_all_posts():
             a.title,
             a.publication_date,
             a.content,
-            a.approved,
+            a.approved
         FROM Post a
         """)
 
@@ -66,7 +66,7 @@ def get_single_post(id):
             a.title,
             a.publication_date,
             a.content,
-            a.approved,
+            a.approved
         FROM Post a
         WHERE a.id = ?
         """, ( id, ))
@@ -132,7 +132,7 @@ def update_post(id, new_Post):
             title = ?,
             publication_date = ?,
             content = ?,
-            approved = ?,
+            approved = ?
         WHERE id = ?
         """, (new_Post['user_id'], new_Post['category_id'],
               new_Post['title'], new_Post['publication_date'],
