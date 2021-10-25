@@ -5,7 +5,7 @@ from tags import get_all_tags, get_single_tag, create_tag, delete_tag, update_ta
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
 from posts import get_all_posts, get_single_post, create_post, delete_post, update_post
 from users import get_all_users, get_single_user, create_user, delete_user, update_user
-from reactions import get_all_reactions, get_single_reaction, create_reaction, update_reaction, delete_reaction
+from reactions import get_all_reactions, get_single_reaction, create_reaction, delete_reaction, update_reaction
 import json
 
 
