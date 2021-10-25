@@ -1,120 +1,83 @@
 import json
 import sqlite3
-from models import Animal
-from models.location import Location
+from models import Tag
 
-ANIMALS = [
-    {
-        "id": 1,
-        "name": "Snickers"
-    },
-    {
-        "id": 2,
-        "name": "Gypsy"
-    }
-]
-# const animals = []
 
-def get_all_animals():
-    with sqlite3.connect("./kennel.db") as conn:
+def get_all_tags():
+    with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        select a.id,
-            a.name,
-            a.breed,
-            a.status,
-            a.location_id,
-            a.customer_id
-        from animal as a
+        select 
+            t.id,
+            t.label
+        from tag as t
         """)
 
         dataset = db_cursor.fetchall()
-        animals = []
+        tags = []
 
         for row in dataset:
-            animal = Animal(row['id'], row['name'], row['breed'], row['status'], row['location_id'])
-            animals.append(animal.__dict__)
-    return json.dumps(animals)
+            tag = Tag(row['id'], row['label'])
+            tags.append(tag.__dict__)
+    return json.dumps(tags)
 
-def get_single_animal(id):
-    with sqlite3.connect('./kennel.db') as conn:
+def get_single_tag(id):
+    with sqlite3.connect('./rare.db') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
         db_cursor.execute("""
         select
-            a.id,
-            a.name,
-            a.breed,
-            a.status,
-            a.location_id,
-            a.customer_id,
-            l.name location_name,
-            l.address,
-            c.name customer_name
-        from animal a
-        join location l on l.id = a.location_id
-        join customer c on c.id = a.customer_id
-        where a.id = ?
+            t.id,
+            t.label
+        from tag t
+        where t.id = ?
         """, (id, ))
 
         data = db_cursor.fetchone()
 
-        animal = Animal(data['id'], data['name'], data['breed'], data['status'], data['location_id'])
-        location = Location(data['location_id'], data['location_name'], data['address'])
-        animal.customer_name = data['customer_name']
-        # animal.customer = {
-        #     'name': data['customer_name']
-        # }
-        animal.location = location.__dict__
-        return json.dumps(animal.__dict__)
+        tag = Tag(data['id'], data['label'])
+        tag.id = data['id']
 
-def create_animal(animal):
-    with sqlite3.connect('./kennel.db') as conn:
+        return json.dumps(tag.__dict__)
+
+def create_tag(tag):
+    with sqlite3.connect('./rare.db') as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        Insert into Animal
-        (name, breed, status, location_id, customer_id)
-        values (?, ?, ?, ?, ?)
-        """, (animal['name'], animal['breed'], animal['status'], animal['location_id'], animal['customer_id']))
+        Insert into Tag
+        (name, label)
+        values (?, ?)
+        """, (tag['name'], tag['label']))
 
-        animal_id = db_cursor.lastrowid
+        tag_id = db_cursor.lastrowid
 
-        animal['id'] = animal_id
+        tag['id'] = tag_id
 
-    return json.dumps(animal)
-def delete_animal(id):
-    with sqlite3.connect('./kennel.db') as conn:
+    return json.dumps(tag)
+
+def delete_tag(id):
+    with sqlite3.connect('./rare.db') as conn:
         db_cursor = conn.cursor()
         db_cursor.execute("""
-            DELETE FROM animal
+            DELETE FROM tag
             where id = ?
         """, (id, ))
-    # conn = sqlite3.connect('./kennel.db')
-    # # execute sql
-    # conn.close()
 
-def update_animal(id, updated_animal):
-    with sqlite3.connect('./kennel.db') as conn:
+
+def update_tag(id, updated_tag):
+    with sqlite3.connect('./rare.db') as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-            Update Animal
+            Update Tag
             Set
-                name = ?,
-                breed = ?,
-                location_id = ?,
-                status = ?,
-                customer_id = ?
+                label = ?,
             where id = ?
         """, (
-            updated_animal['name'],
-            updated_animal['breed'],
-            updated_animal['location_id'],
-            updated_animal['status'],
-            updated_animal['customer_id'],
+            updated_tag['label'],
             id
         ))
 
@@ -125,7 +88,7 @@ def update_animal(id, updated_animal):
         else:
             return False
 
-def get_animals_by_search(text):
-    animals = json.loads(get_all_animals())
-    animals = [animal for animal in animals if text.lower() in animal['name'].lower()]
-    return json.dumps(animals)
+def get_tags_by_search(text):
+    tags = json.loads(get_all_tags())
+    tags = [tag for tag in tags if text.lower() in tag['label'].lower()]
+    return json.dumps(tags)
