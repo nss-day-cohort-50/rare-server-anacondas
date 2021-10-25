@@ -3,7 +3,6 @@ import json
 from models import Category
 
 def get_all_categories():
-    # Open a connection to the database
     with sqlite3.connect("./rare.db") as conn:
 
         conn.row_factory = sqlite3.Row
@@ -54,7 +53,7 @@ def get_single_category(id):
 
 
 def create_category(new_category):
-    with sqlite3.connect("./kennel.db") as conn:
+    with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
@@ -86,8 +85,7 @@ def update_category(id, new_category):
         WHERE id = ?
         """, (new_category['label'], id, ))
 
-        # Were any rows affected?
-        # Did the client send an `id` that exists?
+
         rows_affected = db_cursor.rowcount
 
     if rows_affected == 0:
@@ -98,65 +96,11 @@ def update_category(id, new_category):
         return True
 
 
-
-def get_animals_by_location(location_id):
-    with sqlite3.connect("./kennel.db") as conn:
-        conn.row_factory = sqlite3.Row
+def delete_category(id):
+    with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        select
-            c.id,
-            c.name,
-            c.breed,
-            c.status,
-            c.location_id,
-            c.customer_id
-        from Animal c
-        WHERE c.location_id = ?
-        """, (location_id,))
-
-        animals = []
-        dataset = db_cursor.fetchall()
-
-        for row in dataset:
-            animal = Animal(row['id'], row['name'], row['breed'], row['status'], row['location_id'], row['customer_id'])
-            animals.append(animal.__dict__)
-    
-    return json.dumps(animals)
-
-
-def get_animals_by_status(status):
-    with sqlite3.connect("./kennel.db") as conn:
-        conn.row_factory = sqlite3.Row
-        db_cursor = conn.cursor()
-
-        db_cursor.execute("""
-        select
-            c.id,
-            c.name,
-            c.breed,
-            c.status,
-            c.location_id,
-            c.customer_id
-        from Animal c
-        WHERE c.status = ?
-        """, (status,))
-
-        animals = []
-        dataset = db_cursor.fetchall()
-
-        for row in dataset:
-            animal = Animal(row['id'], row['name'], row['breed'], row['status'], row['location_id'], row['customer_id'])
-            animals.append(animal.__dict__)
-    
-    return json.dumps(animals)
-
-def delete_animal(id):
-    with sqlite3.connect("./kennel.db") as conn:
-        db_cursor = conn.cursor()
-
-        db_cursor.execute("""
-        DELETE FROM animal
+        DELETE FROM category
         WHERE id = ?
         """, (id, ))
