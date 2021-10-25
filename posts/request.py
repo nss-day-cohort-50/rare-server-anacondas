@@ -4,33 +4,36 @@ import json
 POSTS = [
     {
         "id": 1,
-        "name": "Howie",
-        "species": "Dog",
-        "location_id": 1,
-        "customer_id": 3,
-        "status": "Admitted"
+        "user_id": 1,
+        "category_id": 2,
+        "title": 1,
+        "publication_date": 10/25,
+        "content": "Hello World",
+        "approved": True
     },
     {
         "id": 2,
-        "name": "Maple",
-        "species": "Dog",
-        "location_id": 1,
-        "customer_id": 2,
-        "status": "Admitted"
+        "user_id": 1,
+        "category_id": 2,
+        "title": 1,
+        "publication_date": 10/25,
+        "content": "Hello World2",
+        "approved": True
     },
     {
         "id": 3,
-        "name": "Kat",
-        "species": "Cat",
-        "location_id": 2,
-        "customer_id": 1,
-        "Status": "Admitted"
+        "user_id": 2,
+        "category_id": 2,
+        "title": 1,
+        "publication_date": 10/25,
+        "content": "Hello World3",
+        "approved": True
     }
 ]
 
 def get_all_posts():
     # Open a connection to the database
-    with sqlite3.connect("./kennel.db") as conn:
+    with sqlite3.connect("./rare.db") as conn:
 
         # Just use these. It's a Black Box.
         conn.row_factory = sqlite3.Row
@@ -86,7 +89,7 @@ def get_all_posts():
     return json.dumps(Posts)
 
 def get_single_post(id):
-    with sqlite3.connect("./kennel.db") as conn:
+    with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
@@ -116,7 +119,7 @@ def get_single_post(id):
 
 
 def create_post(new_Post):
-    with sqlite3.connect("./kennel.db") as conn:
+    with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
@@ -143,7 +146,7 @@ def create_post(new_Post):
 
 
 def delete_post(id):
-    with sqlite3.connect("./kennel.db") as conn:
+    with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
@@ -153,7 +156,7 @@ def delete_post(id):
 
 
 def update_post(id, new_Post):
-    with sqlite3.connect("./kennel.db") as conn:
+    with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
