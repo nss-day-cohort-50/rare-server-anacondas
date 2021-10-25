@@ -1,1 +1,1 @@
-from .request import delete_animal, get_all_animals, get_single_animal, create_animal, delete_animal, update_animal, get_animals_by_location, get_animals_by_status
+from .request import delete_category, get_all_categories, get_single_category, delete_category, update_category, create_category
