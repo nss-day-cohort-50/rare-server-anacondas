@@ -15,7 +15,7 @@ def get_all_posts():
         db_cursor.execute("""
         SELECT
             a.id,
-            a.user_id
+            a.user_id,
             a.category_id,
             a.title,
             a.publication_date,
@@ -61,7 +61,7 @@ def get_single_post(id):
         db_cursor.execute("""
         SELECT
             a.id,
-            a.user_id
+            a.user_id,
             a.category_id,
             a.title,
             a.publication_date,
