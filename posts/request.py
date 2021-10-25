@@ -15,22 +15,13 @@ def get_all_posts():
         db_cursor.execute("""
         SELECT
             a.id,
-            a.name,
-            a.breed,
-            a.status,
-            a.location_id,
-            a.customer_id,
-            l.id l_id,
-            l.name location_name,
-            l.address location_address,
-            c.id c_id,
-            c.name customer_name,
-            c.address customer_address
+            a.user_id,
+            a.category_id,
+            a.title,
+            a.publication_date,
+            a.content,
+            a.approved
         FROM Post a
-        JOIN Location l
-            ON l.id = a.location_id
-        JOIN Customer c
-            ON c.id = a.customer_id
         """)
 
         # Initialize an empty list to hold all Post representations
@@ -70,11 +61,12 @@ def get_single_post(id):
         db_cursor.execute("""
         SELECT
             a.id,
-            a.name,
-            a.breed,
-            a.status,
-            a.location_id,
-            a.customer_id
+            a.user_id,
+            a.category_id,
+            a.title,
+            a.publication_date,
+            a.content,
+            a.approved
         FROM Post a
         WHERE a.id = ?
         """, ( id, ))
@@ -134,15 +126,17 @@ def update_post(id, new_Post):
         db_cursor.execute("""
         UPDATE Post
             SET
-                name = ?,
-                breed = ?,
-                status = ?,
-                location_id = ?,
-                customer_id = ?
+            id = ?,
+            user_id = ?,
+            category_id = ?,
+            title = ?,
+            publication_date = ?,
+            content = ?,
+            approved = ?
         WHERE id = ?
-        """, (new_Post['name'], new_Post['breed'],
-              new_Post['status'], new_Post['location_id'],
-              new_Post['customer_id'], id, ))
+        """, (new_Post['user_id'], new_Post['category_id'],
+              new_Post['title'], new_Post['publication_date'],
+              new_Post['content'], new_Post['approved'], id, ))
 
         # Were any rows affected?
         # Did the client send an `id` that exists?
