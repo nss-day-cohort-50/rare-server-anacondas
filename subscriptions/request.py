@@ -15,7 +15,7 @@ def get_all_subscriptions():
             s.author_id,
             s.created_on,
             s.ended_on 
-        from tag as s
+        from Subscriptions as s
         """)
 
         subscriptions = []
@@ -36,13 +36,14 @@ def get_single_subscription(id):
             s.author_id,
             s.created_on,
             s.ended_on
-        from subscription s
+        from Subscriptions s
         where s.id = ?
         """, (id, ))
 
         data = db_cursor.fetchone()
 
-        subscription = Subscription(data['id'], data['follower_id'], data['author_id'], data['created_on'], data['ended_on'})subscription.id = data['id']
+        subscription = Subscription(data['id'], data['follower_id'], data['author_id'], data['created_on'], data['ended_on'])
+        subscription.id = data['id']
 
         return json.dumps(subscription.__dict__)
 
@@ -51,7 +52,7 @@ def create_subscription(new_subscription):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        Insert into Subscription
+        Insert into Subscriptions
         (follower_id, author_id, created_on, ended_on)
         values (?, ?)
         """, (new_subscription['follower_id'], new_subscription['author_id'], new_subscription['created_on'], new_subscription['ended_on'] ))
@@ -66,7 +67,7 @@ def delete_subscription(id):
     with sqlite3.connect('./rare.db') as conn:
         db_cursor = conn.cursor()
         db_cursor.execute("""
-            DELETE FROM subscription
+            DELETE FROM Subscriptions
             where id = ?
         """, (id, ))
 
@@ -76,7 +77,7 @@ def update_subscription(id, updated_subscription):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-            Update Subscription
+            Update Subscriptions
             Set
                 follower_id = ?,
                 author_id = ?,
