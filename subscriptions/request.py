@@ -1,6 +1,6 @@
 import json
 import sqlite3
-from models import Subscription, subscription
+from models import Subscription
 
 
 def get_all_subscriptions():
@@ -18,9 +18,8 @@ def get_all_subscriptions():
         from tag as s
         """)
 
-        dataset = db_cursor.fetchall()
         subscriptions = []
-
+        dataset = db_cursor.fetchall()
         for row in dataset:
             subscription = Subscription(row['id'], row['follower_id'], row['author_id,'], row['created_on'], row['ended_on'])
             subscriptions.append(subscription.__dict__)
@@ -43,12 +42,11 @@ def get_single_subscription(id):
 
         data = db_cursor.fetchone()
 
-        subscription = Subscription(data['id'], data['follower_id'], data['author_id'], data['created_on'], data['ended_on'])
-        subscription.id = data['id']
+        subscription = Subscription(data['id'], data['follower_id'], data['author_id'], data['created_on'], data['ended_on'})subscription.id = data['id']
 
         return json.dumps(subscription.__dict__)
 
-def create_subscription(tag):
+def create_subscription(new_subscription):
     with sqlite3.connect('./rare.db') as conn:
         db_cursor = conn.cursor()
 
@@ -56,13 +54,13 @@ def create_subscription(tag):
         Insert into Subscription
         (follower_id, author_id, created_on, ended_on)
         values (?, ?)
-        """, (subscription['follower_id'], subscription['author_id'], subscription['created_on'], subscription['ended_on'] ))
+        """, (new_subscription['follower_id'], new_subscription['author_id'], new_subscription['created_on'], new_subscription['ended_on'] ))
 
         subscription_id = db_cursor.lastrowid
 
-        subscription['id'] = subscription_id
+        new_subscription['id'] = subscription_id
 
-    return json.dumps(subscription)
+    return json.dumps(new_subscription)
 
 def delete_subscription(id):
     with sqlite3.connect('./rare.db') as conn:

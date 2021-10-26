@@ -11,8 +11,8 @@ def get_all_categories():
         db_cursor.execute("""
         SELECT
             c.id,
-            c.name
-        FROM Category c
+            c.label
+        FROM category c
         """)
 
         categories = []
@@ -38,8 +38,8 @@ def get_single_category(id):
         db_cursor.execute("""
         SELECT
             c.id,
-            c.name
-        FROM Category c
+            c.label
+        FROM category c
         """, ( id, ))
 
         data = db_cursor.fetchone()

@@ -14,20 +14,19 @@ def get_all_users():
             t.bio,
             t.created_on,
             t.active,
-            t.user_id,
             t.first_name,
             t.last_name,
             t.email,
             t.username,
             t.password
-        from user as t
+        from Users as t
         """)
 
         dataset = db_cursor.fetchall()
         users = []
 
         for row in dataset:
-            user = User(row['id'], row['bio'],row['created_on'], row['active'],row['user_id'], row['first_name'],row['last_name'], row['email'], row['username'], row['password'])
+            user = User(row['id'], row['bio'],row['created_on'], row['active'], row['first_name'],row['last_name'], row['email'], row['username'], row['password'])
             users.append(user.__dict__)
     return json.dumps(users)
 
@@ -45,7 +44,7 @@ def get_single_user(id):
 
         data = db_cursor.fetchone()
 
-        user = User(data['id'], data['bio'],data['created_on'], data['active'],data['user_id'], data['first_name'],data['last_name'], data['email'], data['username'], data['password'])
+        user = User(data['id'], data['bio'],data['created_on'], data['active'], data['first_name'],data['last_name'], data['email'], data['username'], data['password'])
 
         return json.dumps(user.__dict__)
 
