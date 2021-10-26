@@ -15,7 +15,7 @@ def get_all_comments():
             c.author_id,
             c.content,
             c.created_on
-        FROM Comment c
+        FROM Comments c
         """)
 
         comments = []
@@ -45,7 +45,7 @@ def get_single_comment(id):
             c.author_id,
             c.content,
             c.created_on
-        FROM Comment c
+        FROM Comments c
         """, ( id, ))
 
         data = db_cursor.fetchone()
@@ -61,11 +61,11 @@ def create_comment(new_comment):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO comment
-            ( content )
+        INSERT INTO Comments
+            ( content, created_on, post_id, author_id )
         VALUES
-            ( ? ); 
-        """, (new_comment['content'] ))
+            ( ?, ?, ?, ? ); 
+        """, (new_comment['content'], new_comment['created_on'], new_comment['post_id'], new_comment['author_id'] ))
 
         id = db_cursor.lastrowid
 
@@ -83,7 +83,7 @@ def update_comment(id, new_comment):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        UPDATE Comment
+        UPDATE Comments
             SET
                 content = ?
         WHERE id = ?
@@ -105,6 +105,6 @@ def delete_comment(id):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM Comment
+        DELETE FROM Comments
         WHERE id = ?
         """, (id, ))
