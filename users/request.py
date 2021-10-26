@@ -37,14 +37,21 @@ def get_single_user(id):
         db_cursor.execute("""
         select
             t.id,
-            t.username
+            t.bio,
+            t.created_on,
+            t.active,
+            t.first_name,
+            t.last_name,
+            t.email,
+            t.username,
+            t.password
         from Users t
         where t.id = ?
         """, (id, ))
 
         data = db_cursor.fetchone()
 
-        user = User(data['id'], data['bio'],data['created_on'], data['active'], data['first_name'],data['last_name'], data['email'], data['username'], data['password'])
+        user = User(data['id'], data['bio'], data['created_on'], data['active'], data['first_name'], data['last_name'], data['email'], data['username'], data['password'])
 
         return json.dumps(user.__dict__)
 
@@ -76,22 +83,20 @@ def update_user(id, updated_user):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-            Update Users
-            Set
+            UPDATE Users
+            SET
                 bio = ?,
-                email = ?,
-            where id = ?
-        """, (
-            updated_user['bio'], updated_user['email', ],
-            id,
-        ))
+                email = ?
+            WHERE id = ?
+        """, (updated_user['bio'], updated_user['email'],
+            id, ))
 
         was_updated = db_cursor.rowcount
 
-        if was_updated:
-            return True
-        else:
+        if was_updated == 0:
             return False
+        else:
+            return True
 
 def get_users_by_search(text):
     users = json.loads(get_all_users())
