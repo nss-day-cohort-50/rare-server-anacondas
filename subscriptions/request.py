@@ -54,7 +54,7 @@ def create_subscription(new_subscription):
         db_cursor.execute("""
         Insert into Subscriptions
         (follower_id, author_id, created_on, ended_on)
-        values (?, ?)
+        values (?, ?, ?, ?)
         """, (new_subscription['follower_id'], new_subscription['author_id'], new_subscription['created_on'], new_subscription['ended_on'] ))
 
         subscription_id = db_cursor.lastrowid
@@ -85,7 +85,7 @@ def update_subscription(id, updated_subscription):
                 ended_on = ?
             where id = ?
         """, (
-            updated_subscription['follower_id'], ['author_id'], ['created_on'], ['ended_on'],
+            updated_subscription['follower_id'], updated_subscription['author_id'], updated_subscription['created_on'], updated_subscription['ended_on'],
             id
         ))
 

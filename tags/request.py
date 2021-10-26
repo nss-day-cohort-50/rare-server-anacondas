@@ -48,13 +48,13 @@ def create_tag(new_tag):
 
         db_cursor.execute("""
         Insert into Tags
-        (name, label)
-        values (?, ?)
-        """, (new_tag['name'], new_tag['label']))
+        ( label )
+        values ( ? );
+        """, (new_tag['label'], ))
 
-        tag_id = db_cursor.lastrowid
+        id = db_cursor.lastrowid
 
-        new_tag['id'] = tag_id
+        new_tag['id'] = id
 
     return json.dumps(new_tag)
 
