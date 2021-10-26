@@ -5,6 +5,7 @@ from tags import get_all_tags, get_single_tag, create_tag, delete_tag, update_ta
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
 from users import get_all_users, get_single_user, create_user, delete_user, update_user
 from reactions import get_all_reactions, get_single_reaction, create_reaction, delete_reaction, update_reaction
+from subscriptions import get_all_subscriptions, get_single_subscription, create_subscription, delete_subscription, update_subscription
 import json
 
 
@@ -104,6 +105,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_user(id)}"
                 else:
                     response = f"{get_all_users()}" 
+            elif resource == "subscriptions":
+                if id is not None:
+                    response = f"{get_single_subscription(id)}"
+                else:
+                    response = f"{get_all_subscriptions()}" 
 
       
    
@@ -134,7 +140,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_post = None
         new_tag = None
         new_comment = None
+        new_subscription = None
         new_user = None
+
 
        
         if resource == "categories":
@@ -149,9 +157,15 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "tags":
             new_tag = create_tag(post_body)
             self.wfile.write(f"{new_tag}".encode())
+
+        if resource == "subscriptions":
+            new_tag = create_subscription(post_body)
+            self.wfile.write(f"{new_subscription}".encode())
+
         if resource == "users":
             new_user = create_user(post_body)
             self.wfile.write(f"{new_user}".encode())
+
 
 
 
@@ -175,6 +189,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             success = update_comment(id, post_body)
         if resource == "users":
             success = update_user
+            (id, post_body)
+        if resource == "subscriptions":
+            success = update_subscription
             (id, post_body)
 
         
@@ -207,6 +224,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write("".encode())
         if resource == "tags":
             delete_comment(id)
+            self.wfile.write("".encode())
+        if resource == "subscriptions":
+            delete_subscription(id)
             self.wfile.write("".encode())
  
 

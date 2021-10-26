@@ -12,7 +12,7 @@ def get_all_tags():
         select 
             t.id,
             t.label
-        from tag as t
+        from Tags as t
         """)
 
         dataset = db_cursor.fetchall()
@@ -31,7 +31,7 @@ def get_single_tag(id):
         select
             t.id,
             t.label
-        from tag t
+        from Tags t
         where t.id = ?
         """, (id, ))
 
@@ -42,21 +42,21 @@ def get_single_tag(id):
 
         return json.dumps(tag.__dict__)
 
-def create_tag(tag):
+def create_tag(new_tag):
     with sqlite3.connect('./rare.db') as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        Insert into Tag
-        (name, label)
-        values (?, ?)
-        """, (tag['name'], tag['label']))
+        Insert into Tags
+        ( label )
+        values ( ? );
+        """, (new_tag['label'], ))
 
-        tag_id = db_cursor.lastrowid
+        id = db_cursor.lastrowid
 
-        tag['id'] = tag_id
+        new_tag['id'] = id
 
-    return json.dumps(tag)
+    return json.dumps(new_tag)
 
 def delete_tag(id):
     with sqlite3.connect('./rare.db') as conn:
@@ -72,7 +72,7 @@ def update_tag(id, updated_tag):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-            Update Tag
+            Update Tags
             Set
                 label = ?,
             where id = ?
@@ -87,8 +87,3 @@ def update_tag(id, updated_tag):
             return True
         else:
             return False
-
-def get_tags_by_search(text):
-    tags = json.loads(get_all_tags())
-    tags = [tag for tag in tags if text.lower() in tag['label'].lower()]
-    return json.dumps(tags)
