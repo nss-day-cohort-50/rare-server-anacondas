@@ -134,6 +134,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_post = None
         new_tag = None
         new_comment = None
+        new_user = None
 
        
         if resource == "categories":
@@ -148,6 +149,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "tags":
             new_tag = create_tag(post_body)
             self.wfile.write(f"{new_tag}".encode())
+        if resource == "users":
+            new_user = create_user(post_body)
+            self.wfile.write(f"{new_user}".encode())
 
 
 

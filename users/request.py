@@ -38,7 +38,7 @@ def get_single_user(id):
         select
             t.id,
             t.username
-        from user t
+        from Users t
         where t.id = ?
         """, (id, ))
 
@@ -48,21 +48,19 @@ def get_single_user(id):
 
         return json.dumps(user.__dict__)
 
-def create_user(user):
+def create_user(new_user):
     with sqlite3.connect('./rare.db') as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        Insert into user
-        (username, first_name, last_name)
-        values (?, ?, ?)
-        """, (user['username'], user['first_name'], user[last_name]))
+        INSERT INTO Users
+        ( first_name, last_name, username )
+        VALUES ( ?, ?, ? );
+        """, ( new_user['first_name'],new_user['last_name'], new_user['username'], ))
+        id = db_cursor.lastrowid
+        new_user['id'] = id
 
-        user_id = db_cursor.lastrowid
-
-        user['id'] = user_id
-
-    return json.dumps(user)
+    return json.dumps(new_user)
 
 def delete_user(id):
     with sqlite3.connect('./rare.db') as conn:
@@ -78,13 +76,14 @@ def update_user(id, updated_user):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-            Update User
+            Update Users
             Set
-                username = ?,
+                bio = ?,
+                email = ?,
             where id = ?
         """, (
-            updated_user['username'],
-            id
+            updated_user['bio'], updated_user['email', ],
+            id,
         ))
 
         was_updated = db_cursor.rowcount
