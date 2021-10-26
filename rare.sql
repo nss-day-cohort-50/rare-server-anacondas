@@ -32,8 +32,6 @@ CREATE TABLE "Posts" (
 
 CREATE TABLE "Comments" (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-  "post_id" INTEGER,
-  "author_id" INTEGER,
   "content" varchar,
   "created_on" date,
   FOREIGN KEY(`post_id`) REFERENCES `Posts`(`id`),
@@ -100,4 +98,18 @@ VALUES (
     '10/22/2021',
     'active:bit'
   );
- 
+
+INSERT INTO Comments  (
+
+    content,
+    created_on,
+    post_id,
+    author_id
+  )
+  VALUES (
+
+    'Hello',
+    '10/26/2021',
+    2,
+    1
+  )
