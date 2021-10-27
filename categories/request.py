@@ -60,7 +60,7 @@ def create_category(new_category):
             ( label )
         VALUES
             ( ? ); 
-        """, (new_category['label'] ))
+        """, (new_category['label'], ))
 
         id = db_cursor.lastrowid
 
