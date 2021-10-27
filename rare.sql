@@ -112,4 +112,21 @@ INSERT INTO Comments  (
     '10/26/2021',
     2,
     1
+  );
+
+INSERT INTO Posts (
+    id,
+    user_id,
+    category_id,
+    title,
+    publication_date,
+    content
   )
+VALUES (
+    1,
+    1,
+    2,
+    'Hello World',
+    '10/26/21',
+    "HELLOOOOO"
+  );
