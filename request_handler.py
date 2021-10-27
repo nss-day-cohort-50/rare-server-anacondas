@@ -3,7 +3,7 @@ from categories import get_all_categories, get_single_category, create_category,
 from posts import get_all_posts, get_single_post, create_post, delete_post, update_post
 from tags import get_all_tags, get_single_tag, create_tag, delete_tag, update_tag
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
-from users import get_all_users, get_single_user, create_user, delete_user, update_user, check_auth
+from users import get_all_users, get_single_user, create_user, delete_user, update_user, check_auth, register_user
 from reactions import get_all_reactions, get_single_reaction, create_reaction, delete_reaction, update_reaction
 from subscriptions import get_all_subscriptions, get_single_subscription, create_subscription, delete_subscription, update_subscription
 import json
@@ -110,6 +110,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_subscription(id)}"
                 else:
                     response = f"{get_all_subscriptions()}" 
+            elif resource == "reactions":
+                if id is not None:
+                    response = f"{get_single_reaction(id)}"
+                else:
+                    response = f"{get_all_reactions()}" 
 
       
    
@@ -144,6 +149,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_user = None
         new_auth = None
 
+        new_register = None
+
+        new_reaction = None
+
+
 
        
         if resource == "categories":
@@ -167,6 +177,15 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "login":
             new_auth = check_auth(post_body)
             self.wfile.write(f"{new_auth}".encode())
+
+        if resource == "register":
+            new_register = register_user(post_body)
+            self.wfile.write(f"{new_register}".encode())
+
+        if resource == "reactions":
+            new_reaction = create_reaction(post_body)
+            self.wfile.write(f"{new_reaction}".encode())
+
 
 
 
@@ -194,6 +213,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             (id, post_body)
         if resource == "subscriptions":
             success = update_subscription
+            (id, post_body)
+        if resource == "reactions":
+            success = update_reaction
             (id, post_body)
 
         
@@ -229,6 +251,14 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write("".encode())
         if resource == "subscriptions":
             delete_subscription(id)
+            self.wfile.write("".encode())
+
+        if resource == "users":
+            delete_user(id)
+
+        if resource == "reactions":
+            delete_reaction(id)
+
             self.wfile.write("".encode())
  
 

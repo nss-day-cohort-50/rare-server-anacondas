@@ -122,3 +122,22 @@ def check_auth(email):
             response = {"valid": False }
         
         return json.dumps(response)
+
+def register_user(new_register):
+    with sqlite3.connect('./rare.db') as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Users
+        ( first_name, last_name, email, password )
+        VALUES ( ?, ?, ?, ? );
+        """, ( new_register['first_name'],new_register['last_name'], new_register['email'], new_register['password'], ))
+        id = db_cursor.lastrowid
+        new_register["id"] = id
+
+        if id:
+            response = {"valid": True, "token": id}
+        else:
+            response = {"valid": False}
+
+    return json.dumps(response)
