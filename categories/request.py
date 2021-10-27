@@ -78,7 +78,7 @@ def update_category(id, new_category):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        UPDATE Category
+        UPDATE Categories
             SET
                 label = ?
         WHERE id = ?
