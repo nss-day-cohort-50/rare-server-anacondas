@@ -12,7 +12,7 @@ def get_all_categories():
         SELECT
             c.id,
             c.label
-        FROM category c
+        FROM Categories c
         """)
 
         categories = []
@@ -39,7 +39,8 @@ def get_single_category(id):
         SELECT
             c.id,
             c.label
-        FROM category c
+        FROM Categories c
+        WHERE c.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
@@ -55,7 +56,7 @@ def create_category(new_category):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Category
+        INSERT INTO Categories
             ( label )
         VALUES
             ( ? ); 
