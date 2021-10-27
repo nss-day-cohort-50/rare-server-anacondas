@@ -77,7 +77,7 @@ def update_reaction(id, new_reaction):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        UPDATE Category
+        UPDATE Reactions
             SET
                 label = ?,
                 image_url = ?

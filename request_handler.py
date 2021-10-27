@@ -176,7 +176,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_auth = check_auth(post_body)
             self.wfile.write(f"{new_auth}".encode())
         if resource == "reactions":
-            new_auth = create_reaction(post_body)
+            new_reaction = create_reaction(post_body)
             self.wfile.write(f"{new_reaction}".encode())
 
 
@@ -205,6 +205,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             (id, post_body)
         if resource == "subscriptions":
             success = update_subscription
+            (id, post_body)
+        if resource == "reactions":
+            success = update_reaction
             (id, post_body)
 
         
@@ -240,6 +243,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write("".encode())
         if resource == "subscriptions":
             delete_subscription(id)
+            self.wfile.write("".encode())
+        if resource == "reactions":
+            delete_reaction(id)
             self.wfile.write("".encode())
  
 
