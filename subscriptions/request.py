@@ -9,19 +9,20 @@ def get_all_subscriptions():
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        select 
+        SELECT
             s.id,
             s.follower_id,
             s.author_id,
             s.created_on,
             s.ended_on 
-        from tag as s
+        FROM Subscriptions s
         """)
-
+ 
         subscriptions = []
         dataset = db_cursor.fetchall()
+        
         for row in dataset:
-            subscription = Subscription(row['id'], row['follower_id'], row['author_id,'], row['created_on'], row['ended_on'])
+            subscription = Subscription(row['id'], row['follower_id'], row['author_id,'], row['created_on'], row['ended_on'] )
             subscriptions.append(subscription.__dict__)
     return json.dumps(subscriptions)
 
@@ -36,13 +37,14 @@ def get_single_subscription(id):
             s.author_id,
             s.created_on,
             s.ended_on
-        from subscription s
+        from Subscriptions s
         where s.id = ?
         """, (id, ))
 
         data = db_cursor.fetchone()
 
-        subscription = Subscription(data['id'], data['follower_id'], data['author_id'], data['created_on'], data['ended_on'})subscription.id = data['id']
+        subscription = Subscription(data['id'], data['follower_id'], data['author_id'], data['created_on'], data['ended_on'])
+        subscription.id = data['id']
 
         return json.dumps(subscription.__dict__)
 
@@ -51,9 +53,9 @@ def create_subscription(new_subscription):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        Insert into Subscription
+        Insert into Subscriptions
         (follower_id, author_id, created_on, ended_on)
-        values (?, ?)
+        values (?, ?, ?, ?)
         """, (new_subscription['follower_id'], new_subscription['author_id'], new_subscription['created_on'], new_subscription['ended_on'] ))
 
         subscription_id = db_cursor.lastrowid
@@ -66,7 +68,7 @@ def delete_subscription(id):
     with sqlite3.connect('./rare.db') as conn:
         db_cursor = conn.cursor()
         db_cursor.execute("""
-            DELETE FROM subscription
+            DELETE FROM Subscriptions
             where id = ?
         """, (id, ))
 
@@ -76,7 +78,7 @@ def update_subscription(id, updated_subscription):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-            Update Subscription
+            Update Subscriptions
             Set
                 follower_id = ?,
                 author_id = ?,
@@ -84,7 +86,7 @@ def update_subscription(id, updated_subscription):
                 ended_on = ?
             where id = ?
         """, (
-            updated_subscription['follower_id'], ['author_id'], ['created_on'], ['ended_on'],
+            updated_subscription['follower_id'], updated_subscription['author_id'], updated_subscription['created_on'], updated_subscription['ended_on'],
             id
         ))
 
