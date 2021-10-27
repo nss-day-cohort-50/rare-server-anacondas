@@ -102,3 +102,23 @@ def get_users_by_search(text):
     users = json.loads(get_all_users())
     users = [user for user in users if text.lower() in user['username'].lower()]
     return json.dumps(users)
+
+def check_auth(email):
+    with sqlite3.connect('./rare.db') as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+        db_cursor.execute("""
+        SELECT 
+        id,
+        email
+        FROM Users
+        WHERE email = ?
+        """, (email["email"], ))
+
+        data = db_cursor.fetchone()
+        if data: 
+            response = {"valid": True, "token": data["id"]}
+        else: 
+            response = {"valid": False }
+        
+        return json.dumps(response)
