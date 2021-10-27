@@ -46,6 +46,7 @@ def get_single_comment(id):
             c.content,
             c.created_on
         FROM Comments c
+        WHERE c.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
