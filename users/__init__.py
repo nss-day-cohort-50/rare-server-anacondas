@@ -1,1 +1,1 @@
-from .request import get_all_users, get_single_user, get_users_by_search, delete_user, create_user, update_user
+from .request import get_all_users, get_single_user, get_users_by_search, delete_user, create_user, update_user, check_auth

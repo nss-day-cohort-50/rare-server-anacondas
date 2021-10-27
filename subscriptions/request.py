@@ -18,11 +18,11 @@ def get_all_subscriptions():
         FROM Subscriptions s
         """)
  
-        subscriptions = []
         dataset = db_cursor.fetchall()
+        subscriptions = []
         
         for row in dataset:
-            subscription = Subscription(row['id'], row['follower_id'], row['author_id,'], row['created_on'], row['ended_on'] )
+            subscription = Subscription(row['id'], row['follower_id'], row['author_id'], row['created_on'], row['ended_on'])
             subscriptions.append(subscription.__dict__)
     return json.dumps(subscriptions)
 
