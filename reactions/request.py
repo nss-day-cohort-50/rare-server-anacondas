@@ -13,7 +13,7 @@ def get_all_reactions():
             r.id,
             r.label,
             r.image_url
-        FROM Reaction r
+        FROM Reactions r
         """)
 
         reactions = []
@@ -41,7 +41,8 @@ def get_single_reaction(id):
             r.id,
             r.label,
             r.image_url
-        FROM Reaction r
+        FROM Reactions r
+        WHERE r.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
@@ -57,11 +58,11 @@ def create_reaction(new_reaction):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Reaction
+        INSERT INTO Reactions
             ( label, image_url )
         VALUES
             ( ?, ? ); 
-        """, (new_reaction['label'], new_reaction['image_url'] ))
+        """, (new_reaction['label'], new_reaction['image_url'], ))
 
         id = db_cursor.lastrowid
 

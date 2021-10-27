@@ -110,6 +110,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_subscription(id)}"
                 else:
                     response = f"{get_all_subscriptions()}" 
+            elif resource == "reactions":
+                if id is not None:
+                    response = f"{get_single_reaction(id)}"
+                else:
+                    response = f"{get_all_reactions()}" 
 
       
    
@@ -143,6 +148,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_subscription = None
         new_user = None
         new_auth = None
+        new_reaction = None
 
 
        
@@ -169,6 +175,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "login":
             new_auth = check_auth(post_body)
             self.wfile.write(f"{new_auth}".encode())
+        if resource == "reactions":
+            new_auth = create_reaction(post_body)
+            self.wfile.write(f"{new_reaction}".encode())
 
 
 
