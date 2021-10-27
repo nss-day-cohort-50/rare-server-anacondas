@@ -110,6 +110,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_subscription(id)}"
                 else:
                     response = f"{get_all_subscriptions()}" 
+            elif resource == "reactions":
+                if id is not None:
+                    response = f"{get_single_reaction(id)}"
+                else:
+                    response = f"{get_all_reactions()}" 
 
       
    
@@ -143,7 +148,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_subscription = None
         new_user = None
         new_auth = None
+
         new_register = None
+
+        new_reaction = None
+
 
 
        
@@ -170,9 +179,15 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "login":
             new_auth = check_auth(post_body)
             self.wfile.write(f"{new_auth}".encode())
+
         if resource == "register":
             new_register = register_user(post_body)
             self.wfile.write(f"{new_register}".encode())
+
+        if resource == "reactions":
+            new_reaction = create_reaction(post_body)
+            self.wfile.write(f"{new_reaction}".encode())
+
 
 
 
@@ -200,6 +215,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             (id, post_body)
         if resource == "subscriptions":
             success = update_subscription
+            (id, post_body)
+        if resource == "reactions":
+            success = update_reaction
             (id, post_body)
 
         
@@ -236,8 +254,13 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "subscriptions":
             delete_subscription(id)
             self.wfile.write("".encode())
+
         if resource == "users":
             delete_user(id)
+
+        if resource == "reactions":
+            delete_reaction(id)
+
             self.wfile.write("".encode())
  
 
