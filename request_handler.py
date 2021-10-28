@@ -119,7 +119,7 @@ class HandleRequests(BaseHTTPRequestHandler):
       
    
 
-        self.wfile.write(response.encode())
+            self.wfile.write(response.encode())
 
 
         

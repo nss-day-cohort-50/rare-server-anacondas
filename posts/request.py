@@ -108,3 +108,6 @@ def update_post(id, new_Post):
         return False
     else:
         return True
+
+
+def get_post_by_user():
