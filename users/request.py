@@ -110,10 +110,12 @@ def check_auth(email):
         db_cursor.execute("""
         SELECT 
         id,
-        email
+        email,
+        password
         FROM Users
         WHERE email = ?
-        """, (email["email"], ))
+        AND password = ?
+        """, (email["email"], email["password"] ))
 
         data = db_cursor.fetchone()
         if data: 
