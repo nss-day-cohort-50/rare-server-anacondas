@@ -130,7 +130,13 @@ VALUES (
     '10/26/21',
     "HELLOOOOO"
   );
-  INSERT INTO Subscriptions (id, follower_id, author_id, created_on, ended_on)
+  INSERT INTO Subscriptions (
+    id,
+    follower_id,
+    author_id, 
+    created_on,
+    ended_on
+  )
   VALUES (
       1,
       1,
