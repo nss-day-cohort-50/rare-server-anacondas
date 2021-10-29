@@ -116,10 +116,14 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_reactions()}" 
 
-      
+        elif len(parsed) == 3:
+            ( resource, key, value ) = parsed
+
+            if key == "userId" and resource == "posts":
+                response = get_post_by_user(value)
    
 
-            self.wfile.write(response.encode())
+        self.wfile.write(response.encode())
 
 
         
