@@ -1,6 +1,7 @@
 import sqlite3
 import json
-from models import Post
+from models import Post, post
+import posts
 
 
 def get_all_posts():
@@ -110,4 +111,31 @@ def update_post(id, new_Post):
         return True
 
 
-def get_post_by_user():
+def get_post_by_user(id):
+    with sqlite3.connect("./rare.db") as conn:
+
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            a.id,
+            a.user_id,
+            a.category_id,
+            a.title,
+            a.publication_date,
+            a.content
+        FROM Posts a
+        WHERE a.user_id = ?
+        """)
+
+        posts = []
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            post = Post(row['id'], row['user_id'], row['category_id'], row['title'] , row['publication_date'], row['content'])
+            posts.append(post.__dict__)
+
+    return json.dumps(posts)
+
+

@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from categories import get_all_categories, get_single_category, create_category, delete_category, update_category
-from posts import get_all_posts, get_single_post, create_post, delete_post, update_post
+from posts import get_all_posts, get_single_post, create_post, delete_post, update_post, get_post_by_user
 from tags import get_all_tags, get_single_tag, create_tag, delete_tag, update_tag
 from comments import get_all_comments, get_single_comment, create_comment, delete_comment, update_comment
 from users import get_all_users, get_single_user, create_user, delete_user, update_user, check_auth, register_user
@@ -97,7 +97,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_all_tags()}"
             elif resource == "posts":
                 if id is not None:
-                    response = f"{get_single_post(id)}"
+                    response = f"{get_post_by_user(id)}"
                 else:
                     response = f"{get_all_posts()}"
             elif resource == "users":
