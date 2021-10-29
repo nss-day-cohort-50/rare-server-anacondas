@@ -127,7 +127,7 @@ def get_post_by_user(id):
             a.content
         FROM Posts a
         WHERE a.user_id = ?
-        """)
+        """, (id,))
 
         posts = []
         dataset = db_cursor.fetchall()
